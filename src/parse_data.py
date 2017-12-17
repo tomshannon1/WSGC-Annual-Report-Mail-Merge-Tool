@@ -3,6 +3,9 @@ from mailmerge import MailMerge
 from datetime import date
 import pandas as pd
 import pprint
+import sys
+sys.path.append("/Users/tomshannon/Documents/GitHub/WSGC-Annual-Report-Mail-Merge-Tool/program_templates")
+from CRL import CRLTemplate
 
 
 class ParseReportData():
@@ -14,6 +17,7 @@ class ParseReportData():
         self.template = template
     
         self.__parseProgram()
+        
         self.__parseTemplate()
 
     def __parseProgram(self):
@@ -40,30 +44,13 @@ class ParseReportData():
     def __parseTemplate(self):
 
         document = MailMerge(self.template)
-        
-        document.merge_pages(self.fields)
-        document.write('test-output-mult-custs.docx')
 
-        '''document.merge(
-            Name = self.fields[0]["Name"],
-            Award = self.fields[0]["Award"],
-            Project = self.fields[0]["Project"],
-            TeamMember1 = self.fields[0]["TeamMember1"],
-            TeamMember2 = self.fields[0]["TeamMember2"],
-            TeamMember3 = self.fields[0]["TeamMember3"],
-            TeamMember4 = self.fields[0]["TeamMember4"],
-            TeamMember5 = self.fields[0]["TeamMember5"],
-            TeamMember6 = self.fields[0]["TeamMember6"],
-            Status1 = self.fields[0]["Status1"],
-            Status2 = self.fields[0]["Status2"],
-            Status3 = self.fields[0]["Status3"],
-            Status4 = self.fields[0]["Status4"],
-            Status5 = self.fields[0]["Status5"],
-            Status6 = self.fields[0]["Status6"],
-            StudentAward = self.fields[0]["StudentAward"],
-            Advisor = self.fields[0]["Advisor"],
-            Abstract = self.fields[0]["Abstract"])
-        document.write('test-output.docx')'''
+        CRLTemplate(self.template, self.fields)
+
+        #document.merge_pages(self.fields)
+        #document.write('test-output-mult-custs.docx')
+
+
 
 if __name__ == "__main__":
 

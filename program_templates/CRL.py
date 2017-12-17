@@ -4,9 +4,9 @@ from datetime import date
 
 class CRLTemplate():
 
-    def __init__(self, document, fields):
-
-        self.document = document
+    def __init__(self, template, fields):
+        
+        self.template = template
         
         self.fields = fields
     
@@ -15,12 +15,14 @@ class CRLTemplate():
     def __parse_document(self):
 
         for entry, recipient in enumerate(self.fields, 1):
+            
+            document = MailMerge(self.template)
 
-            self.document.merge(
+            document.merge(
         
                 Name = recipient["Name"],
                 Award = recipient["Award"],
-                Adivsor = recipient["Award"],
+                Advisor = recipient["Advisor"],
                 Project = recipient["Project"],
                 
                 TeamMember1 = recipient["TeamMember1"],
@@ -37,19 +39,14 @@ class CRLTemplate():
                 Status5 = recipient["Status5"],
                 Status6 = recipient["Status6"],
                                 
-                Award1 = recipient["StudentAward"],
-                Award2 = recipient["StudentAward"],
-                Award3 = recipient["StudentAward"],
-                Award4 = recipient["StudentAward"],
-                Award5 = recipient["StudentAward"],
-                Award6 = recipient["StudentAward"],
+                StudentAward = recipient["StudentAward"],
                                 
                 Abstract = recipient["Abstract"],
                                 
-                CongressionalDistrict = recipient["CongressionalDistrict"],
+                CongressionalDistrict = str(recipient["CongressionalDistrict"]),
                 CongressionalRepresentative = recipient["CongressionalRepresentative"]
                                 
                 )
                 
-            document.write('CD%d/CRL_%d.docx' % (recipient["CongressionalDistrict"], entry))
+            document.write('/Users/tomshannon/Documents/GitHub/WSGC-Annual-Report-Mail-Merge-Tool/program_templates/CD%d/CRL_%d.docx' % (recipient["CongressionalDistrict"], entry))
 
