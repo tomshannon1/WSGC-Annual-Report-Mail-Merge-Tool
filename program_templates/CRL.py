@@ -51,5 +51,5 @@ class CRLTemplate():
                                 
                 )
                 
-            document.write('CRL/CRL_%d.docx' % entry)
+            document.write('CD%d/CRL_%d.docx' % (recipient["CongressionalDistrict"], entry))
 
