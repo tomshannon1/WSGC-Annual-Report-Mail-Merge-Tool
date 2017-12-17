@@ -4,55 +4,52 @@ from datetime import date
 
 class CRLTemplate():
 
-    def __init__(self, document):
+    def __init__(self, document, fields):
 
         self.document = document
+        
+        self.fields = fields
     
         self.__parse_document()
 
     def __parse_document(self):
 
+        for entry, recipient in enumerate(self.fields, 1):
 
-template = "WSGC-Annual Report 2017.docx"
-
-CRLDictionary = CRLSheet
-
-document.merge(
-
-    Name=CRLDictionary["Name"],
-    Award=CRLDictionary["Award"],
-    Advisor=CRLDictionary["Advisor"],
-    Project=CRLDictionary["Project"],
-    
-    TeamMember1=CRLDictionary["TeamMember 1"],
-    Status1=CRLDictionary["Status1"],
-    Award1=CRLDictionary["StudentAward"],
-    
-    TeamMember2=CRLDictionary["TeamMember 2"],
-    Status2=CRLDictionary["Status2"],
-    Award2=CRLDictionary["StudentAward"],
-    
-    TeamMember3=CRLDictionary["TeamMember 3"],
-    Status3=CRLDictionary["Status3"],
-    Award3=CRLDictionary["StudentAward"]
-    
-    TeamMember4=CRLDictionary["TeamMember4"],
-    Status4=CRLDictionary["Status4"],
-    Award4=CRLDictionary["StudentAward"],
-    
-    TeamMember5=CRLDictionary["TeamMember5"],
-    Status5=CRLDictionary["Status5"],
-    Award5=CRLDictionary["StudentAward"]
-    
-    TeamMember6=CRLDictionary["TeamMember6"],
-    Status6=CRLDictionary["Status6"],
-    Award6=CRLDictionary["StudentAward"]
-    
-    
-    Absract=CRLDictionary["Abstract"],
-    CongressionalDistrict=CRL
-    )
-    
-document.write('test-output.docx')
-
+            self.document.merge(
+        
+                Name = recipient["Name"],
+                Award = recipient["Award"],
+                Adivsor = recipient["Award"],
+                Project = recipient["Project"],
+                
+                TeamMember1 = recipient["TeamMember1"],
+                TeamMember2 = recipient["TeamMember2"],
+                TeamMember3 = recipient["TeamMember3"],
+                TeamMember4 = recipient["TeamMember4"],
+                TeamMember5 = recipient["TeamMember5"],
+                TeamMember6 = recipient["TeamMember6"],
+                                
+                Status1 = recipient["Status1"],
+                Status2 = recipient["Status2"],
+                Status3 = recipient["Status3"],
+                Status4 = recipient["Status4"],
+                Status5 = recipient["Status5"],
+                Status6 = recipient["Status6"],
+                                
+                Award1 = recipient["StudentAward"],
+                Award2 = recipient["StudentAward"],
+                Award3 = recipient["StudentAward"],
+                Award4 = recipient["StudentAward"],
+                Award5 = recipient["StudentAward"],
+                Award6 = recipient["StudentAward"],
+                                
+                Abstract = recipient["Abstract"],
+                                
+                CongressionalDistrict = recipient["CongressionalDistrict"],
+                CongressionalRepresentative = recipient["CongressionalRepresentative"]
+                                
+                )
+                
+            document.write('CRL/CRL_%d.docx' % entry)
 
