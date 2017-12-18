@@ -5,53 +5,67 @@ import pandas as pd
 import pprint
 import sys
 sys.path.append("/Users/tomshannon/Documents/GitHub/WSGC-Annual-Report-Mail-Merge-Tool/program_templates")
-from CRL import CRLTemplate
+from createdocument import WriteDocuments
 
 
 class ParseReportData():
 
     def __init__(self, excelFile, template):
 
+        # Excel workbook with all corresponding data about program recipients
         self.excelFile = excelFile
         
+        # Templates for each program (dictionary "AOP": "Template (AOP, SBS).docx")
         self.template = template
     
+        # Parse the Excel workbook for data on recipients for each program
         self.__parseProgram()
-        
-        self.__parseTemplate()
 
     def __parseProgram(self):
 
+        # Take in Excel workbook with sheets corresponding to all sheets
         self.excelSheets = pd.ExcelFile(self.excelFile)
         
-        dataframe = self.excelSheets.parse("CRL")
-    
-        dictionary = dataframe.to_dict()
+        # Get sheet names and ignore the first sheet (FIXME in excel sheet later)
+        self.sheet_names = self.excelSheets.sheet_names
+        self.sheet_names.remove("MainSheet")
         
-        self.fields = []
-    
-        for key, value in dictionary.items():
-            
-            for key1, value1 in value.items():
-                
-                if 0 <= key1 < len(self.fields):
-                
-                    self.fields[key1][key] = value1
+        # Create dataframes for each excel sheet
+        self.dataframes = [self.excelSheets.parse(sheet) for sheet in self.sheet_names]
 
-                else:
-                    self.fields.append({key:value1})
+        # Create dictionary objects for each pandas dataframe
+        self.dictionary = [frame.to_dict() for frame in self.dataframes]
+        
+        # Re-arrange dictionary settings to align with document merge
+        for sheet_id, dataframe_dictionary in enumerate(self.dictionary, start=0):
+            
+            self.fields = []
+        
+            for key, value in dataframe_dictionary.items():
+        
+                for otherKey, otherValue in value.items():
+    
+                    if 0 <= otherKey < len(self.fields):
+    
+                        self.fields[otherKey][key] = otherValue
+    
+                    else:
+                        self.fields.append({key : otherValue})
+        
+            # Get corresponding template for mailmerge
+            self.template_path = self.template[self.sheet_names[sheet_id]]
+            
+            # Create document based off template
+            self.__parseTemplate()
+
 
     def __parseTemplate(self):
 
-        document = MailMerge(self.template)
-
-        CRLTemplate(self.template, self.fields)
-
-        #document.merge_pages(self.fields)
-        #document.write('test-output-mult-custs.docx')
-
+        # Populate templated document with data from exceel sheet
+        WriteDocuments(self.template_path, self.fields)
 
 
 if __name__ == "__main__":
 
-    ParseReportData("test.xlsx", "test.docx")
+    # Add all WSGC programs to the report in dictionary template
+    ParseReportData("WSGC_Recipient_Data_Report.xlsx", {"CRL"  : "test.docx"})
