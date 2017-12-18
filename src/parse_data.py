@@ -1,8 +1,5 @@
-from __future__ import print_function
 from mailmerge import MailMerge
-from datetime import date
 import pandas as pd
-import pprint
 import sys
 sys.path.append("/Users/tomshannon/Documents/GitHub/WSGC-Annual-Report-Mail-Merge-Tool/program_templates")
 from createdocument import WriteDocuments
@@ -28,7 +25,6 @@ class ParseReportData():
         
         # Get sheet names and ignore the first sheet (FIXME in excel sheet later)
         self.sheet_names = self.excelSheets.sheet_names
-        self.sheet_names.remove("MainSheet")
         
         # Create dataframes for each excel sheet
         self.dataframes = [self.excelSheets.parse(sheet) for sheet in self.sheet_names]
@@ -56,16 +52,28 @@ class ParseReportData():
             self.template_path = self.template[self.sheet_names[sheet_id]]
             
             # Create document based off template
+            self.sheet_name = self.sheet_names[sheet_id]
             self.__parseTemplate()
 
 
     def __parseTemplate(self):
 
         # Populate templated document with data from exceel sheet
-        WriteDocuments(self.template_path, self.fields)
+        WriteDocuments(self.template_path, self.fields, self.sheet_name)
 
 
 if __name__ == "__main__":
+    
+    # FIXME -- Add UGS, OPP,USIP
+    templates = {"CRL" : "test.docx", "GPP": "template_GPP_IIP_NIP_UGR.docx",
+                 "IIP": "template_GPP_IIP_NIP_UGR.docx", "NIP" : "template_GPP_IIP_NIP_UGR.docx",
+                 "UGR" : "template_GPP_IIP_NIP_UGR.docx", "AOP" : "template_AOP_HEI_RIP_SIP.docx",
+                 "HEI" : "template_AOP_HEI_RIP_SIP.docx", "RIP" : "template_AOP_HEI_RIP_SIP.docx",
+                 "SIP" : "template_AOP_HEI_RIP_SIP.docx", "SBS" : "template_SBS_UGS.docx",
+                 "SSI" : "template_SSI.docx",
+                 "EBP" : "template_EBP.docx"}
+    
+    
 
     # Add all WSGC programs to the report in dictionary template
-    ParseReportData("WSGC_Recipient_Data_Report.xlsx", {"CRL"  : "test.docx"})
+    ParseReportData("WSGC_Recipient_Data_Report.xlsx", templates)
