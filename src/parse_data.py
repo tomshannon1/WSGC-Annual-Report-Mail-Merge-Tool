@@ -64,16 +64,16 @@ class ParseReportData():
 
 if __name__ == "__main__":
     
-    # FIXME -- Add UGS, OPP,USIP
+    # Templates for each WSGC Program
     templates = {"CRL" : "test.docx", "GPP": "template_GPP_IIP_NIP_UGR.docx",
                  "IIP": "template_GPP_IIP_NIP_UGR.docx", "NIP" : "template_GPP_IIP_NIP_UGR.docx",
                  "UGR" : "template_GPP_IIP_NIP_UGR.docx", "AOP" : "template_AOP_HEI_RIP_SIP.docx",
                  "HEI" : "template_AOP_HEI_RIP_SIP.docx", "RIP" : "template_AOP_HEI_RIP_SIP.docx",
                  "SIP" : "template_AOP_HEI_RIP_SIP.docx", "SBS" : "template_SBS_UGS.docx",
-                 "SSI" : "template_SSI.docx",
-                 "EBP" : "template_EBP.docx"}
+                 "SSI" : "template_SSI.docx", "UGS" : "template_SBS_UGS.docx",
+                 "EBP" : "template_EBP.docx", "USIP":"template_USIP.docx",
+                 "OPP" : "template_AOP_HEI_RIP_SIP.docx"}
     
     
-
     # Add all WSGC programs to the report in dictionary template
     ParseReportData("WSGC_Recipient_Data_Report.xlsx", templates)
