@@ -1,7 +1,5 @@
 from mailmerge import MailMerge
 import pandas as pd
-import sys
-sys.path.append("/Users/tomshannon/Documents/GitHub/WSGC-Annual-Report-Mail-Merge-Tool/program_templates")
 from createdocument import WriteDocuments
 
 
@@ -64,6 +62,9 @@ class ParseReportData():
 
 if __name__ == "__main__":
     
+    template_path = "/Users/tomshannon/Documents/GitHub/WSGC-Annual-Report-Mail-Merge-Tool/program_templates/"
+    
+    
     # Templates for each WSGC Program
     templates = {"CRL" : "test.docx", "GPP": "template_GPP_IIP_NIP_UGR.docx",
                  "IIP": "template_GPP_IIP_NIP_UGR.docx", "NIP" : "template_GPP_IIP_NIP_UGR.docx",
@@ -73,7 +74,11 @@ if __name__ == "__main__":
                  "SSI" : "template_SSI.docx", "UGS" : "template_SBS_UGS.docx",
                  "EBP" : "template_EBP.docx", "USIP":"template_USIP.docx",
                  "OPP" : "template_AOP_HEI_RIP_SIP.docx"}
-    
-    
+
+    # Add leading absolute path to the template documents
+    for key, value in templates.items():
+        oldValue = value
+        templates[key] = template_path + oldValue
+
     # Add all WSGC programs to the report in dictionary template
     ParseReportData("WSGC_Recipient_Data_Report.xlsx", templates)
